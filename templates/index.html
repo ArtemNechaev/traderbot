@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h4>Добавить монету для торговли</h4>
+    <form method="post">
+        <div class="row" , >
+            <div class="col form-floating">
+                <input type="text" class="form-control"  id="ticker" name="ticker" placeholder="BTCUSDT">
+                <label for="ticker" style="margin-left: 10px">ticker</label>
+            </div>
+            <div class="col form-floating">
+                <input type="text" class="form-control" id="summa" name="summa" placeholder="7">
+                <label for="summa" style="margin-left: 10px">Сумма для торговли $</label>
+            </div>
+            <div class="col form-floating">
+                <input type="text" class="form-control" id="mul_buy" name="mul_buy"  value="1.001">
+                <label for="mul_buy" style="margin-left: 10px">коэффициент для цены BID</label>
+            </div>
+            <div class="col form-floating">
+                <input type="text" class="form-control" id="mul_sell" name="mul_sell"  value="0.999">
+                <label for="mul_sell" style="margin-left: 10px">коэффициент для цены ASC</label>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary">RUN</button>
+            </div>
+        </div>
+    </form>
+
+    {% for ticker, data in coins.items() %}
+    <form action="{{url_for('remove', id= ticker )}}" method="post" , class="row", style="margin: 40px;">
+        <div class ="col">
+            {{ticker}} {{data}}
+        </div>
+        <div class ="col">
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </div>
+        
+        
+    </form>
+    {% endfor %}
+
+{% endblock %}
+
