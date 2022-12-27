@@ -36,14 +36,14 @@ class TradingAgent(threading.Thread):
 
 
             if not open_orders:
-                if balance_s1 and balance_s1.get('free', 0) > ex_info['min_volume']*stack['bidPrice']\
-                    and self.profit_condition(stack['askPrice'], stack['bidPrice']):
+                if balance_s1 and balance_s1.get('free', 0) > ex_info['min_volume']/stack['bidPrice']:
 
                     price = round(stack['askPrice']*self.mul_sell, ex_info['price_precision'])
                     quantity = round(balance_s1.get('free', 0), ex_info['volume_precision'])
 
                     self.client.create_order(self.symbol, 'SELL', price, quantity)
-                else:
+                elif self.profit_condition(stack['askPrice'], stack['bidPrice']):
+
                     price = round(stack['bidPrice']*self.mul_buy,ex_info['price_precision'])
                     quantity = round(self.s2_volume/price, ex_info['volume_precision'])
 
@@ -64,9 +64,10 @@ class TradingAgent(threading.Thread):
                     and open_orders['price'] > stack['askPrice']:
 
                     self.client.cancel_open_orders(self.symbol)
-                    price = round(stack['askPrice']*self.mul_sell, ex_info['price_precision'])
-                    quantity = round(balance_s1.get('free', 0),ex_info['volume_precision'])
+                    if balance_s1.get('free', 0) > ex_info['min_volume']/stack['bidPrice']:
+                        price = round(stack['askPrice']*self.mul_sell, ex_info['price_precision'])
+                        quantity = round(balance_s1.get('free', 0),ex_info['volume_precision'])
 
-                    self.client.create_order(self.symbol, 'SELL', price, quantity)
+                        self.client.create_order(self.symbol, 'SELL', price, quantity)
 
             
