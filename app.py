@@ -52,7 +52,7 @@ def index():
         
         elif not summa:
             flash('Введите сумму торговли')
-        elif client.get_balance('USDT')['free'] - sum(c['summa'] for c in coins) - summa < 0:
+        elif client.get_balance('USDT')['free'] - sum(c['summa'] for k, c in coins.items()) - summa < 0:
                 flash('Недостаточно средств')
 
         #validate buy multiply coeff
